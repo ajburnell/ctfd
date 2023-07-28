@@ -17,3 +17,8 @@ variable "r53_zone_id" {
   type = string  
   description = "The domain zone ID for where we want to create the Route 53 records."
 }
+
+variable "instance_size" {
+  type = string
+  description = "The AWS EC2 instance size to create."
+}
