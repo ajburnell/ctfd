@@ -63,13 +63,29 @@
   ### MARIA DB ###
   - name: Secure the MariaDB database server.
     block: 
+      # Ref: https://stackoverflow.com/questions/16444306/ansible-idempotent-mysql-installation-playbook
+      - name: Change MariaDB root password...
+        mysql_user: 
+          name: root
+          password: "{{ service_pass }}"
+          login_unix_socket: "/var/run/mysqld/mysqld.sock"
+          host_all: true
+
+      # Required for idempotency...
+      - name: Copy .my.cnf file with root password credentials
+        template: 
+          src: templates/my.cnf.j2
+          dest: "/home/{{ ctfd_system_user }}/.my.cnf" 
+          owner: {{ ctfd_system_user }} 
+          mode: 0600
+
       - name: Remove all anonymous database user accounts
-        community.mysql.mysql_user:
+        mysql_user: 
           name: ''
           host_all: true
           state: absent
           login_unix_socket: "/var/run/mysqld/mysqld.sock"
-
+          
       - name: Remove remote login for database user root
         community.mysql.mysql_query:
           query: DELETE FROM mysql.user WHERE User='root' AND Host NOT IN ('localhost', '127.0.0.1', '::1');
@@ -79,22 +95,15 @@
         community.mysql.mysql_db:
           name: test
           state: absent
-          login_unix_socket: "/var/run/mysqld/mysqld.sock"
-
-      - name: Change database root password.
-        community.mysql.mysql_user:
-          name: root
-          password: "{{ service_pass }}"
-          login_unix_socket: "/var/run/mysqld/mysqld.sock"
+          login_unix_socket: "/var/run/mysqld/mysqld.sock"   
 
       - name: Flush privileges;
         community.mysql.mysql_query:
           query: "FLUSH PRIVILEGES;"
           login_unix_socket: "/var/run/mysqld/mysqld.sock"
-          login_password: "{{ service_pass }}"
 
   ### CTFD ###
-  - name: Downnload and configure CTFd server.
+  - name: Download and configure CTFd server.
     block:
       - name: Create CTFd folder.
         file:
