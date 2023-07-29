@@ -65,7 +65,7 @@
     block: 
       # Ref: https://stackoverflow.com/questions/16444306/ansible-idempotent-mysql-installation-playbook
       - name: Change MariaDB root password...
-        mysql_user: 
+        community.mysql.mysql_user: 
           name: root
           password: "{{ service_pass }}"
           login_unix_socket: "/var/run/mysqld/mysqld.sock"
@@ -80,7 +80,7 @@
           mode: 0600
 
       - name: Remove all anonymous database user accounts
-        mysql_user: 
+        community.mysql.mysql_user: 
           name: ''
           host_all: true
           state: absent
