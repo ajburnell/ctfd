@@ -134,10 +134,7 @@ resource "local_file" "ansible_inventory_ctfd" {
 resource "terraform_data" "ctfd_ansible" {
 
   provisioner "local-exec" {
-    command = <<EOT
-    echo -e "[ctfd]\n${aws_instance.ctfd_server.public_ip}" > hosts.bak
-    ANSIBLE_FORCE_COLOR=1 ansible-playbook -u ctfd -i hosts.ini --private-key ${var.private_key_filename} --ssh-common-args='-o StrictHostKeyChecking=no' playbook.yml -vv
-    EOT
+    command = "ANSIBLE_FORCE_COLOR=1 ansible-playbook -u ctfd -i hosts.ini --private-key ${var.private_key_filename} --ssh-common-args='-o StrictHostKeyChecking=no' playbook.yml -vv"
   }
 
   depends_on = [
