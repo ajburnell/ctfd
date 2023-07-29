@@ -1,10 +1,7 @@
 ## Configure a CTFd server with gunicorn and NGINX ##
 ## Tested working with Ubuntu on AWS and with Vagrant ##
 
-## TODO:
-## - Tidy up a few code blocks to user variables instead of hardcoded.
-## - Make certbot idempotent. It injects code into middle of Ansible managed block :-|
-## - Make the password idempotent. Perhaps from vault.
+## Uncomment certbot when testing finised ##
 
 # https://nopresearcher.github.io/Deploying-CTFd/
 # https://github.com/CTFd/CTFd/wiki/Advanced-Deployment
@@ -39,10 +36,6 @@
         - redis
         - python3-mysqldb
     become: yes
-
-  - name: Create service password for Redis and MariaDB.
-    set_fact:
-      service_pass: "{{ lookup('ansible.builtin.password', '/dev/null', length=16) }}"
 
   ### REDIS ###
   - name: Configure Redis user and and enable the cache.
@@ -204,9 +197,9 @@
               - certbot-nginx
 
         # Comment out when testing due to rate limiting.of 5 certs in one week for same domain.
-        - name: Install SSL certificate with certbot
-          command: "sudo certbot --nginx -d ctfd.ablab.com.au -m xenoc17299@sparkroi.com --non-interactive --agree-tos"
-          register: certbot
+        #- name: Install SSL certificate with certbot
+        #  command: "sudo certbot --nginx -d ctfd.ablab.com.au -m xenoc17299@sparkroi.com --non-interactive --agree-tos"
+        #  register: certbot
 
   ### RESTART SOME SERVICES ###
   - name: Restart NGINX and gunicorn CTFd service.
