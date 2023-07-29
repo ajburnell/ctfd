@@ -56,7 +56,7 @@ resource "local_file" "local_pub_key" {
 resource "terraform_data" "ctfd_ansible_vault" {
 
   provisioner "local-exec" {
-    command = "python3 service_pass.py"
+    command = "python service_pass.py"
   }
 }
 
