@@ -1,1 +1,2 @@
 vault_password
+/group_vars/ctfd/vault.yml
