@@ -1,0 +1,13 @@
+[Unit]
+Description=Gunicorn instance to serve ctfd
+After=network.target
+
+[Service]
+User={{ ctfd_system_user }}
+Group=www-data
+WorkingDirectory={{ ctfd_location }}
+Environment="PATH={{ ctfd_location }}/venv/bin"
+ExecStart={{ ctfd_location }}/venv/bin/gunicorn --bind unix:app.sock --keep-alive 4 --workers 8 --worker-class=gevent 'CTFd:create_app()' --access-logfile '/var/log/ctfd/access.log' --error-logfile '/var/log/ctfd/error.log'
+
+[Install]
+WantedBy=multi-user.target
