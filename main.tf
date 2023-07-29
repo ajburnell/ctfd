@@ -143,7 +143,7 @@ resource "local_file" "ansible_inventory_ctfd" {
 resource "terraform_data" "ctfd_ansible" {
 
   provisioner "local-exec" {
-    command = "ANSIBLE_FORCE_COLOR=1 ansible-playbook -vault-password-file vault_password -u ctfd -i hosts.ini --private-key ${var.private_key_filename} --ssh-common-args='-o StrictHostKeyChecking=no' playbook.yml -vv"
+    command = "ANSIBLE_FORCE_COLOR=1 ansible-playbook --vault-password-file vault_password -u ctfd -i hosts.ini --private-key ${var.private_key_filename} --ssh-common-args='-o StrictHostKeyChecking=no' playbook.yml -vv"
   }
 
   depends_on = [
