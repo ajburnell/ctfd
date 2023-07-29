@@ -85,22 +85,26 @@
           host_all: true
           state: absent
           login_unix_socket: "/var/run/mysqld/mysqld.sock"
+          login_password: "{{ service_pass }}"
           
       - name: Remove remote login for database user root
         community.mysql.mysql_query:
           query: DELETE FROM mysql.user WHERE User='root' AND Host NOT IN ('localhost', '127.0.0.1', '::1');
           login_unix_socket: "/var/run/mysqld/mysqld.sock"
+          login_password: "{{ service_pass }}"
 
       - name: Remove test database
         community.mysql.mysql_db:
           name: test
           state: absent
           login_unix_socket: "/var/run/mysqld/mysqld.sock"   
+          login_password: "{{ service_pass }}"
 
       - name: Flush privileges;
         community.mysql.mysql_query:
           query: "FLUSH PRIVILEGES;"
           login_unix_socket: "/var/run/mysqld/mysqld.sock"
+          login_password: "{{ service_pass }}"
 
   ### CTFD ###
   - name: Download and configure CTFd server.
