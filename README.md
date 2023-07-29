@@ -14,12 +14,12 @@ Amend configurations as required in `variables.tf` and `ctfd_external_vars.yml`.
 
 ### TODO 
 
-[] At the moment the Ansible playbook isn't idempotent as it generates a new service password for the Redis cache ACL and MariaDB root user on the fly. Need to migrate this password to Ansible vault.
-[] Create a flag to use on-demand instance instead of spot should reliability be important.
-[] Modularise some of the TF config, such as key creation.
-[] Remove a few extra hardcoded parameters and replace with variables.
-[] Launch as a GitHub action?
-[] Add paramter to import a site backup on configuration:
+-[] At the moment the Ansible playbook isn't idempotent as it generates a new service password for the Redis cache ACL and MariaDB root user on the fly. Need to migrate this password to Ansible vault.
+-[] Create a flag to use on-demand instance instead of spot should reliability be important.
+-[] Modularise some of the TF config, such as key creation.
+-[] Remove a few extra hardcoded parameters and replace with variables.
+-[] Launch as a GitHub action?
+-[] Add paramter to import a site backup on configuration:
 ```bash
 cd /var/www/ctfd
 source venv/bin/activate
