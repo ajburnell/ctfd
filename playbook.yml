@@ -76,7 +76,7 @@
         template: 
           src: templates/my.cnf.j2
           dest: "/home/{{ ctfd_system_user }}/.my.cnf" 
-          owner: {{ ctfd_system_user }} 
+          owner: "{{ ctfd_system_user }}"
           mode: 0600
 
       - name: Remove all anonymous database user accounts
