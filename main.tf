@@ -51,6 +51,14 @@ resource "local_file" "local_pub_key" {
   content = tls_private_key.ctfd_key.public_key_openssh
 }
 
+## Generate the Ansible vault and MariaDB / Redis user passwords.
+## Allows the Ansible playbook to be idempotent in respect of the passwords.
+resource "terraform_data" "ctfd_ansible_vault" {
+
+  provisioner "local-exec" {
+    command = "service_pass.py"
+  }
+
 ## Create the EC2 instance with spot pricing
 resource "aws_instance" "ctfd_server" {
   ami = data.aws_ami.ubuntu_x86_64.id
@@ -134,7 +142,7 @@ resource "local_file" "ansible_inventory_ctfd" {
 resource "terraform_data" "ctfd_ansible" {
 
   provisioner "local-exec" {
-    command = "ANSIBLE_FORCE_COLOR=1 ansible-playbook -u ctfd -i hosts.ini --private-key ${var.private_key_filename} --ssh-common-args='-o StrictHostKeyChecking=no' playbook.yml -vv"
+    command = "ANSIBLE_FORCE_COLOR=1 ansible-playbook -vault-password-file vault_password -u ctfd -i hosts.ini --private-key ${var.private_key_filename} --ssh-common-args='-o StrictHostKeyChecking=no' playbook.yml -vv"
   }
 
   depends_on = [
