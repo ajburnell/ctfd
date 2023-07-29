@@ -58,6 +58,7 @@ resource "terraform_data" "ctfd_ansible_vault" {
   provisioner "local-exec" {
     command = "service_pass.py"
   }
+}
 
 ## Create the EC2 instance with spot pricing
 resource "aws_instance" "ctfd_server" {
