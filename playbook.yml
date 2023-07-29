@@ -11,9 +11,6 @@
 
 - hosts: ctfd
 
-  vars_files:
-    - ctfd_external_vars.yml
-
   pre_tasks:
   - name: Update cache.
     apt: update_cache=yes
