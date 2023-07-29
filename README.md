@@ -12,7 +12,8 @@ As it is just used for short lived small team training, it is currently configur
 
 ### TODO 
 
-- [X] At the moment the Ansible playbook isn't idempotent as it generates a new service password for the Redis cache ACL and MariaDB root user on the fly. Need to migrate this password to Ansible vault. Implemented with the Python script `service_pass.py`.
+- [X] At the moment the Ansible playbook isn't idempotent as it generates a new service password for the Redis cache ACL and MariaDB root user on the fly. Need to migrate this password to Ansible vault.
+  - Fixed. Implemented with the Python script `service_pass.py` for Ansible Vault and added idempotency with .my.cnf.
 - [ ] Create a flag to use on-demand instance instead of spot should reliability be important.
 - [ ] Modularise some of the TF config, such as key creation.
 - [ ] Remove a few extra hardcoded parameters and replace with variables.
