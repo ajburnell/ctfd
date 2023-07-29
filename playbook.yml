@@ -159,24 +159,10 @@
       ## Ref: https://medium.com/building-the-system/gunicorn-3-means-of-concurrency-efbb547674b7
     
       - name: Create the gunicorn ctfd system unit service file.
-        blockinfile:
-          create: true
-          path: "/etc/systemd/system/ctfd.service"
-          state: present
-          block: |
-            [Unit]
-            Description=Gunicorn instance to serve ctfd
-            After=network.target
-    
-            [Service]
-            User={{ ctfd_system_user }}
-            Group=www-data
-            WorkingDirectory={{ ctfd_location }}
-            Environment="PATH={{ ctfd_location }}/venv/bin"
-            ExecStart={{ ctfd_location }}/venv/bin/gunicorn --bind unix:app.sock --keep-alive 4 --workers 8 --worker-class=gevent 'CTFd:create_app()' --access-logfile '/var/log/ctfd/access.log' --error-logfile '/var/log/ctfd/error.log'
-    
-            [Install]
-            WantedBy=multi-user.target
+        template:
+          src: "./templates/ctfd.service.j2"
+          dest: "/etc/systemd/system/ctfd.service"
+          mode: 0644
 
       - name: Enable and start the CTFd service.
         service:
