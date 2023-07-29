@@ -6,8 +6,6 @@ It runs CTFd using Gunicorn and NGINX and installs a Lets Encrypt SSL certificat
 
 As it is just used for short lived small team training, it is currently configured to use spot instances.
 
-Amend configurations as required in `variables.tf` and `ctfd_external_vars.yml`.
-
 ### NOTES
 - Comment out the certbot generation for testing so you don't trip the API limits for the same domain in a five day period.
 - Don't forget to set your R53 zone identifier for DNS.
