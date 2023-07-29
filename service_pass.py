@@ -17,4 +17,4 @@ f.write("service_pass: \"" + service_password + "\"")
 f.close()
 
 # Add the service password to a vault
-ansible_vault = subprocess.run(["ansible-vault", "encrypt", "--vault-password-file", "vault_password", "./group_vars/ctfd/vault"])
+ansible_vault = subprocess.run(["ansible-vault", "encrypt", "--vault-password-file", "vault_password", "./group_vars/ctfd/vault.yml"])
