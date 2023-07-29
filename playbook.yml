@@ -175,27 +175,11 @@
   ## Ref: https://docs.gunicorn.org/en/latest/deploy.html ##
   - name: Configure NGINX and restart service
     block:
-      - name: Create the NGINX CTFd site configuration
-        blockinfile:
-          create: true
-          path: "/etc/nginx/sites-available/{{ ctfd_domain_name }}"
-          state: present
-          block: |
-            server {
-              listen 80;
-              server_name {{ ctfd_domain_name }};
-              client_max_body_size 75M;
-    
-              location / {
-                proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-                proxy_set_header X-Forwarded-Proto $scheme;
-                proxy_set_header Host $http_host;
-                # we don't want nginx trying to do something clever with
-                # redirects, we set the Host: header above already.
-                proxy_redirect off;
-                proxy_pass http://unix:{{ ctfd_location }}/app.sock;
-              }
-            }
+      - name: Create the NGINX site configuration.
+        template:
+          src: "./templates/nginx.site.j2"
+          dest: "/etc/nginx/sites-available/{{ ctfd_domain_name }}"
+          mode: 0644
         become: yes
   
       - name: Link the new NGINX configuration.
@@ -223,9 +207,9 @@
               - certbot-nginx
 
           # Comment out when testing due to rate limiting.of 5 certs in one week for same domain.
-          #- name: Install SSL certificate with certbot
-          #command: "sudo certbot --nginx -d ctfd.ablab.com.au -m xenoc17299@sparkroi.com --non-interactive --agree-tos"
-          #register: certbot
+          - name: Install SSL certificate with certbot
+          command: "sudo certbot --nginx -d ctfd.ablab.com.au -m xenoc17299@sparkroi.com --non-interactive --agree-tos"
+          register: certbot
 
   ### RESTART SOME SERVICES ###
   - name: Restart NGINX and gunicorn CTFd service.
