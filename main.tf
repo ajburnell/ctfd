@@ -60,11 +60,11 @@ resource "aws_instance" "ctfd_server" {
   instance_market_options {
     market_type = "spot"
         spot_options {
-      max_price = 0.100
+      max_price = var.max_spot_price
     }
   }
 
-  instance_type = "t2.medium"
+  instance_type = var.ec2_instance_size
   tags = {
     Name = "ctfd"
   }
@@ -72,7 +72,7 @@ resource "aws_instance" "ctfd_server" {
   ## Upload our unique key for the CTFd user.
   provisioner "file" {
     source      =  var.public_key_filename
-    destination = "/tmp/ctfd_key.pub"
+    destination = "/tmp/$(var.public_key_filename)"
 
   connection {
       host        = aws_instance.ctfd_server.public_ip
@@ -90,7 +90,7 @@ resource "aws_instance" "ctfd_server" {
       "sudo useradd ctfd -m -s /bin/bash",
       "sudo usermod -aG sudo ctfd",
       "sudo mkdir -p /home/ctfd/.ssh",
-      "sudo cp /tmp/ctfd_key.pub /home/ctfd/.ssh/authorized_keys",
+      "sudo cp /tmp/$(var.public_key_filename) /home/ctfd/.ssh/authorized_keys",
       "sudo chown -R ctfd:ctfd /home/ctfd/.ssh",
       "sudo chmod 700 /home/ctfd/.ssh && sudo chmod 600 /home/ctfd/.ssh/authorized_keys",
       "sudo su -c \"echo 'ctfd ALL=(ALL) NOPASSWD:ALL' > /etc/sudoers.d/ctfd\""
@@ -145,27 +145,3 @@ resource "terraform_data" "ctfd_ansible" {
     aws_route53_record.ctfd_a
   ]
 }
-
-## Doesn't quite seem ready for prime time.
-# resource "ansible_playbook" "provision_ctfd" {
-#  playbook     = "playbook.yml"
-#  name         = aws_instance.ctfd_server.public_ip
-#  replayable   = true
-#  verbosity    = 4
-#  groups       = [ "ctfd" ]
-#
-#  # Debug
-#  ignore_playbook_failure = true  # <- here
-#
-#  extra_vars = {
-#    ansible_host                       = aws_instance.ctfd_server.public_ip
-#    ansible_user                       = "ctfd"
-#    ansible_ssh_private_key_file       = var.private_key_filename
-#    ansible_ssh_common_args            = "\"'-o StrictHostKeyChecking=no'\""
-#  }
-#
-#  depends_on = [
-#    aws_instance.ctfd_server,
-#    aws_route53_record.ctfd_a
-#  ]
-#}

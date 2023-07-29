@@ -18,7 +18,12 @@ variable "r53_zone_id" {
   description = "The domain zone ID for where we want to create the Route 53 records."
 }
 
-variable "instance_size" {
+variable "ec2_instance_size" {
   type = string
   description = "The AWS EC2 instance size to create."
+}
+
+variable "max_spot_price" {
+  type = number
+  description = "Maximum bid price for the AWS spot instance."
 }
