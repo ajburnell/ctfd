@@ -242,7 +242,7 @@
         debug:
           var: backup_file_import
         
-      when: (ctfd_backup is defined) and (ctfd_backup|length > 0)
+    when: (ctfd_backup is defined) and (ctfd_backup|length > 0)
 
   ### RESTART SOME SERVICES ###
   - name: Restart NGINX and gunicorn CTFd service.
