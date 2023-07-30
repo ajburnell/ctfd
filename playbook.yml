@@ -222,6 +222,12 @@
           path: "{{ ctfd_backup }}"
         register: backup_file_import
 
+      - name: If so, let's copy it to the host.
+        copy:
+          src: "{{ ctfd_backup }}"
+          dest: "{{ ctfd_location }}"
+        when: backup_file.stat.exists == True
+ 
       - name: Try and import the backup.
         command: 
           cmd: "python import.py {{ ctfd_backup }}"
@@ -229,8 +235,7 @@
 
         environment:
           PATH: "{{ ctfd_location }}/venv/bin"
-
-        when: backup_file.stat.exists == True
+          
         register: ctfd_import_backup
 
       - name: Outcome of import task.
