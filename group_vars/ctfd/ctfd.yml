@@ -1,4 +1,16 @@
+# A full CTFd zip file site export to import.
+# Must be present in /backup folder.
+ctfd_backup: "test.zip"
+
+# Location to install CTFd too (aka clone the repo too).
 ctfd_location: "/var/www/ctfd"
+
+# The system user to perform installation / configuration as.
 ctfd_system_user: "ctfd"
-ctfd_nginx_server_name: "ctfd"
+
+# Fully qualified domain name.
+# Used for naming NGINX config files and for certbot certificate request to Let's Encrypt.
 ctfd_domain_name: "ctfd.ablab.com.au"
+
+# The email to be provided to Certbot to get a Let's Encrypt certificate.
+certbot_email: "xenoc17299@sparkroi.com"
