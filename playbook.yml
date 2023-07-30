@@ -239,7 +239,7 @@
         register: ctfd_import_backup
 
       - name: Outcome of import task.
-          debug:
+        debug:
           var: backup_file_import
         
       when: (ctfd_backup is defined) and (ctfd_backup|length > 0)
