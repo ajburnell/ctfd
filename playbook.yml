@@ -211,7 +211,7 @@
 
         # Comment out when testing due to rate limiting.of 5 certs in one week for same domain.
         #- name: Install SSL certificate with certbot
-        #  command: "sudo certbot --nginx -d ctfd.ablab.com.au -m xenoc17299@sparkroi.com --non-interactive --agree-tos"
+        #  command: "sudo certbot --nginx -d {{ ctfd_domain_name }} -m xenoc17299@sparkroi.com --non-interactive --agree-tos"
         #  register: certbot
 
   ### RESTART SOME SERVICES ###
