@@ -241,6 +241,7 @@
       - name: Outcome of import task.
         debug:
           var: ctfd_import_backup
+        when: (ctfd_import_backup is defined) and (ctfd_import_backup|length > 0)
         
     when: (ctfd_backup is defined) and (ctfd_backup|length > 0)
 
