@@ -217,30 +217,30 @@
   ### IMPORT A CTFD SITE BACKUP IF PROVIDED ###
   - name: Imports a CTFd site backup to configure site to a previous state.
     block:
-      - name: Does the backup file exist?
-        stat:
-          path: "{{ ctfd_backup }}"
-        register: backup_file_import
-
-      - name: If so, let's copy it to the host.
+      - name: Copy the backup file to the host.
         copy:
           src: "{{ ctfd_backup }}"
-          dest: "{{ ctfd_location }}"
-        when: backup_file.stat.exists == True
- 
+          dest: "{{ ctfd_location }}/importme.zip"
+        
+      - name: Does the backup file exist?
+        stat:
+          path: "{{ ctfd_location }}/importme.zip"
+        register: backup_file
+         
       - name: Try and import the backup.
         command: 
-          cmd: "python import.py {{ ctfd_backup }}"
+          cmd: "python import.py importme.zip"
           chdir:  "{{ ctfd_location }}"
 
         environment:
           PATH: "{{ ctfd_location }}/venv/bin"
           
         register: ctfd_import_backup
+        when: backup_file.stat.exists == True
 
       - name: Outcome of import task.
         debug:
-          var: backup_file_import
+          var: ctfd_import_backup
         
     when: (ctfd_backup is defined) and (ctfd_backup|length > 0)
 
