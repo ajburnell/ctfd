@@ -1,6 +1,6 @@
 # A full CTFd zip file site export to import.
 # Provide the absolute file path on the src host.
-ctfd_backup: "test.zip"
+ctfd_backup: "ctfd_backup.zip"
 
 # Location to install CTFd too (aka clone the repo too).
 ctfd_location: "/var/www/ctfd"
