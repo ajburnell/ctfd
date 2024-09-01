@@ -1,4 +1,9 @@
 # NETWORKING #
+
+data "http" "ip" {
+  url = "https://ifconfig.me/ip"
+}
+
 resource "aws_vpc" "app" {
   cidr_block           = "10.0.0.0/16"
   enable_dns_hostnames = true
@@ -31,7 +36,7 @@ resource "aws_route_table_association" "app_subnet1" {
   route_table_id = aws_route_table.app.id
 }
 
-# HTTPS Securiy Group
+# Security Groups
 resource "aws_security_group" "web_ssl" {
   name   = "web_ssl"
   vpc_id = aws_vpc.app.id
@@ -42,6 +47,14 @@ resource "aws_security_group" "web_ssl" {
     to_port     = 443
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  # SSH access from host executing Terraform
+  ingress {
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks =  ["${http.ip.response_body}/32"]
   }
 
   # Outbound internet access
