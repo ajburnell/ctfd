@@ -49,6 +49,14 @@ resource "aws_security_group" "web_ssl" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
+  # HTTP access from anywhere
+  ingress {
+    from_port   = 443
+    to_port     = 443
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
   # SSH access from host executing Terraform
   ingress {
     from_port   = 22
