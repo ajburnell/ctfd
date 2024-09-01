@@ -1,3 +1,9 @@
+variable "aws_region" {
+  type        = string
+  description = "Region to use for AWS resources"
+  default     = "ap-southeast-2"
+}
+
 variable "public_key_filename" {
   type = string
   description = "The filaname to write the public key too."

@@ -66,6 +66,9 @@ resource "aws_instance" "ctfd_server" {
   key_name = aws_key_pair.akp.key_name
   associate_public_ip_address = true
 
+  subnet_id              = aws_subnet.public_subnet1.id
+  vpc_security_group_ids = [aws_security_group.web_ssl.id]
+
   instance_market_options {
     market_type = "spot"
         spot_options {
