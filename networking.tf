@@ -62,7 +62,7 @@ resource "aws_security_group" "web_ssl" {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks =  ["${http.ip.response_body}/32"]
+    cidr_blocks =  ["${data.http.ip.response_body}/32"]
   }
 
   # Outbound internet access
