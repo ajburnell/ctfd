@@ -4,11 +4,14 @@ This is a simple Terraform / Vagrant configuration to launch an AWS or local Ubu
 
 It runs CTFd using Gunicorn and NGINX and installs a Lets Encrypt SSL certificate with certbot.
 
-As it is just used for short lived small team training, it is currently configured to use spot instances.
+A security group on AWS allows only HTTP/S access and SSH from the public IP of the host running Terraform. The CTFd site will be unconfigured and require immediate setup. Alternatively you can import your own backup of a CTFd instance by placing ctfd_backup.zip in the root folder of the project.
+
+As it is just used for short lived small team training, it is currently configured to use spot instances. Change the max spot price / instance type in terraform.tfvars.
 
 ### NOTES
 - Comment out the certbot generation for testing so you don't trip the API limits for the same domain in a five day period.
 - Don't forget to set your R53 zone identifier for DNS.
+- You'll need python3, Ansible and AWS CLI working on the terraform host.
 
 ### TODO 
 
