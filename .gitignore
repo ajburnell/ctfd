@@ -1,5 +1,5 @@
 vault_password
-/group_vars/ctfd/vault.yml
+/group_vars/ctfd_vault.yml
 /.vagrant
 /.terraform
 /.vscode
